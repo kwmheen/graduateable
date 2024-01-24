@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Colored Rotated Cards</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow-x: hidden; /* 가로 스크롤 방지 */
+            overflow-y: auto; /* 세로 스크롤 허용 */
+            flex-direction: center;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-width: 1200px; /* 컨테이너의 최소 너비 설정 */
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            transform: rotate(-18deg);
+        }
+        .card {
+            width: 330px;
+            height: 450px;
+            margin: 10px;
+            background-color: #f3f3f3;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .card.special1 {
+            background-color: #0066ff;
+        }
+        .card.special2 {
+            background-color: #1456b8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="card">카드 1</div>
+            <div class="card special1">카드 2</div>
+            <div class="card">카드 3</div>
+        </div>
+        <div class="row">
+            <div class="card">카드 4</div>
+            <div class="card special2">카드 5</div>
+            <div class="card">카드 6</div>
+        </div>
+    </div>
+</body>
+</html>

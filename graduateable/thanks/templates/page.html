@@ -1,0 +1,71 @@
+<!-- myapp/templates/image.html -->
+
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Page</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .date-container {
+            position: relative; /* 부모 컨테이너를 relative로 설정 */
+            margin-top: 20px;
+        }
+        img#date {
+            position: relative; /* date 이미지를 상위 요소인 date-container에 대해 relative로 설정 */
+            z-index: 2; /* date를 dateshadow 위에 표시 */
+        }
+        img#shadowdate {
+            position: absolute; /* dateshadow 이미지를 상위 요소인 date-container에 대해 absolute로 설정 */
+            top: 10px; /* 상단에서 30px 아래에 위치 */
+            left: 10px; /* 왼쪽에서 10px 오른쪽에 위치 */
+            z-index: 1; /* dateshadow를 date 아래에 표시 */
+        }
+        img#main {
+            margin-top: -45px; /* main.png가 상단으로부터 90px 떨어지게 설정 */
+        }
+        img#title {
+            position: relative;
+            top: -90px; /* title.png가 main.png와 90px 겹치게 설정 */
+            z-index: 2;
+        }
+        img#paka {
+            position: relative;
+            top: -160px;
+            left: 100px;
+            z-index: 1;
+        }
+        img#progress {
+            position: relative;
+            top: -150px;
+            z-index: 2;
+        }
+        a#progress-link {
+            position: relative;
+            top: -150px;
+            z-index: 3;
+        }
+    </style>
+</head>
+<body>
+    <div class="date-container">
+        <img src="{% static 'images/date.png' %}" alt="Date Image" id="date">
+        <img src="{% static 'images/dateshadow.png' %}" alt="Date Shadow Image" id="shadowdate">
+    </div>
+    <img src="{% static 'images/main.png' %}" alt="Main Image" id="main">
+    <img src="{% static 'images/title.png' %}" alt="Title Image" id="title">
+    <img src="{% static 'images/paka.png' %}" alt="Paka Image" id="paka">
+    <a href="https://www.naver.com" id="progress-link" target="_blank">
+        <img src="{% static 'images/progress.png' %}" alt="Progress Image" id="progress">
+    </a>
+</body>
+</html>
