@@ -29,7 +29,3 @@ class ReserveView(View):
         return JsonResponse({'status': 'success',
                              'message': 'Updated',
                              'data': reservation}, status=201)
-        
-def update(request):
-    print('asdf')
-    return ''
