@@ -1,17 +1,24 @@
+
+{% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>Colored Rotated Cards</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow-x: hidden; /* 가로 스크롤 방지 */
-            overflow-y: auto; /* 세로 스크롤 허용 */
-            flex-direction: center;
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin: 0 auto;
         }
         .container {
+            position: relative;
             display: flex;
             flex-direction: column;
             min-width: 1200px; /* 컨테이너의 최소 너비 설정 */
@@ -27,30 +34,79 @@
             height: 450px;
             margin: 10px;
             background-color: #f3f3f3;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             display: flex;
             justify-content: center;
             align-items: center;
         }
+        .maincard {
+            width: 340px;
+            height: 460px;
+            margin: 10px;
+            position: relative;
+        }
         .card.special1 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 330px;
+            height: 450px;
             background-color: #0066ff;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 2;
+            align-items: flex-end;
+            justify-content: flex-start;
         }
         .card.special2 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 330px;
+            height: 450px;
             background-color: #1456b8;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 2;
+            align-items: flex-start;
+            justify-content: flex-end;
+        }
+        .card.shadow {
+            position: absolute;
+            width: 330px;
+            height: 450px;
+            background-color: #121212;
+            z-index: 1;
+            top: 10px;
+            left: 10px;
+        }
+        img#text{
+            margin: 15px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="row">
-            <div class="card">카드 1</div>
-            <div class="card special1">카드 2</div>
-            <div class="card">카드 3</div>
+            <div class="card"></div>
+            <div class="maincard">
+                <a href="https://www.naver.com">
+                    <div class="card special1">
+                        <img src="{% static 'images/reserve.png' %}" alt="reserve Text" id="text">
+                    </div>
+                </a>
+                <div class="card shadow"></div>
+            </div>
+            <div class="card"></div>
         </div>
         <div class="row">
-            <div class="card">카드 4</div>
-            <div class="card special2">카드 5</div>
-            <div class="card">카드 6</div>
+            <div class="card"></div>
+            <div class="maincard">
+                <a href="https://www.naver.com">
+                    <div class="card special2">
+                        <img src="{% static 'images/thanksto.png' %}" alt="thanksto Text" id="text">
+                    </div>
+                </a>
+                <div class="card shadow"></div>
+            </div>
+            <div class="card"></div>
         </div>
     </div>
 </body>

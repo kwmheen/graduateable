@@ -1,0 +1,262 @@
+<!-- myapp/templates/image.html -->
+
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var input = document.querySelector('input[type="text"]');
+            var title = document.querySelector('.formtitle');
+            var form = document.querySelector('form');
+            var selectedDiv = document.querySelector('.selected');
+            var items = document.querySelectorAll('.item');
+            var applyButton = document.getElementById('apply');
+
+            applyButton.addEventListener('click', function(event) {
+                event.preventDefault(); // 기본 동작 중단
+
+                var selectedTime = selectedTimeDiv.textContent;
+                var name = input.value;
+
+                if (selectedTime && name) {
+                    // AJAX 요청 보내기
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "http:/15.164.202.71:8000/update", true);
+                    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    xhr.send("name=" + encodeURIComponent(name) + "&time=" + encodeURIComponent(selectedTime) + "&status=거부된");
+
+                    alert("예약 정보가 업데이트 되었습니다.");
+                } else {
+                    alert("시간을 선택해주세요.");
+                }
+            });
+    
+            input.addEventListener('focus', function() {
+                title.style.color = '#0066FF';
+            });
+    
+            input.addEventListener('blur', function() {
+                title.style.color = '#121212';
+            });
+    
+            items.forEach(function(item) {
+                item.addEventListener('click', function() {
+                    var statusDiv = item.querySelector('.itemstatus');
+    
+                    if (statusDiv.textContent.trim() === '가능한') {
+                        items.forEach(resetItem);
+                        statusDiv.textContent = '선택한';
+                        item.style.backgroundColor = '#0066FF';
+                        selectedDiv.textContent = item.querySelector('.itemtext').textContent;
+                    }
+                });
+            });
+    
+            function resetItem(item) {
+                var statusDiv = item.querySelector('.itemstatus');
+                if (statusDiv.textContent.trim() === '선택한') {
+                    statusDiv.textContent = '가능한';
+                    item.style.backgroundColor = '#1456B8';
+                }
+            }
+    
+            form.addEventListener('submit', function(event) {
+                var hiddenInputTime = document.createElement('input');
+                hiddenInputTime.type = 'hidden';
+                hiddenInputTime.name = 'time';
+                hiddenInputTime.value = selectedDiv.textContent;
+                form.appendChild(hiddenInputTime);
+    
+                var hiddenInputStatus = document.createElement('input');
+                hiddenInputStatus.type = 'hidden';
+                hiddenInputStatus.name = 'status';
+                hiddenInputStatus.value = '거부된';
+                form.appendChild(hiddenInputStatus);
+            });
+
+            function updateItemColor(item, status) {
+                if (status === '가능한') {
+                    item.style.backgroundColor = '#1456B8';
+                } else if (status === '거부된') {
+                    item.style.backgroundColor = '#121212';
+                }
+            }
+
+            // 페이지 로드 시 배경색 초기화
+            items.forEach(function(item) {
+                var statusDiv = item.querySelector('.itemstatus');
+                updateItemColor(item, statusDiv.textContent.trim());
+            });
+        });
+    </script>
+    <title>Reserve Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            background-color: #F5F5F5;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        .container {
+            width: 430px;
+            background-color: #FFFFFF;
+            height: 100%;
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .header {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            margin-bottom: 50px;
+        }
+        img#reserve {
+            position: relative; /* date 이미지를 상위 요소인 date-container에 대해 relative로 설정 */
+            width: 205px;
+            height: 54px;
+            margin-top: 90px;
+            margin-left: 30px;
+        }
+        img#flow {
+            position: absolute;
+            width: 181px;
+            height:151.85px;
+            margin-left: 200px;
+        }
+        .forms {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            width: 330px;
+        }
+        .formtitle {
+            font-size: 20pt;
+            margin-left: 5px;
+            padding-bottom: 5px;
+            padding-top: 5px;
+        }
+        input[type="text"] {
+            border: 3px solid #121212;
+            outline: none;
+            color: #121212;
+            width: 330px;
+            height: 40px;
+            border-radius: 20px;
+            font-size: 12pt;
+        }
+        input[type="text"]:focus {
+            border: 3px solid #0066FF;
+            color: #0066FF;
+            font-weight: 900;
+        }
+        .flatlist {
+            display: flex;
+            overflow-x: auto;
+            width: 330px;
+            height: 120px;
+            overflow-y: hidden;
+            flex-wrap: nowrap;
+            align-items: center;
+            padding: 5px;
+        }
+        .item {
+            width: 80px;
+            height: 100px;
+            margin: 5px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            margin-right: 10px;
+            background-color: #1456B8;
+            padding: 10px;
+        }
+        .itemtext {
+            font-size: 16pt;
+            color: #FFFFFF;
+        }
+        .itemstatus {
+            font-size: 15pt;
+            color: #FFFFFF;
+        }
+        .selected {
+            width: 330px;
+            height: 40px;
+            border-radius: 20px;
+            font-size: 12pt;
+            border: 3px solid #121212;
+            margin-top: 20px;
+            align-items: center;
+            display: flex;
+            padding-left: 10px;
+        }
+        img#quokka{
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 273px;
+            height: 354px;
+        }
+        img#hugme {
+            position: absolute;
+            bottom: 250px;
+            left: 160px;
+        }
+        a#apply {
+            position: absolute;
+            bottom: 120px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="{% static 'images/reserveblack.png' %}" alt="Title" id="reserve">
+            <img src="{% static 'images/flow.png' %}" alt="Flow" id="flow">
+        </div>
+        <div class="forms">
+            <div class="formtitle">
+                이름
+            </div>
+            <form action="http://your-server-url.com" method="post">
+                <input type="text" name="inputName" placeholder="원영준 교수님">
+            </form>
+        </div>
+        <div class="forms">
+            <div class="formtitle">
+                시간
+            </div>
+            <div class="flatlist">
+                {% for reservation in reservations %}
+                <div class="item" data-time="{{ reservation.time }}" data-status="{{ reservation.status }}">
+                    <div class="itemtext">{{ reservation.time }}</div>
+                    <div class="itemstatus">{{ reservation.status }}</div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="selected">
+
+            </div>
+        </div>
+        <img src="{% static 'images/quokka.png' %}" alt="quokka" id="quokka">
+        <img src="{% static 'images/hugme.png' %}" alt="hugme" id="hugme">
+        <a href="https://www.naver.com" id="apply">
+            <img src="{% static 'images/apply.png' %}" alt="apply" id="apply">
+        </a>
+    </div>
+</body>
+</html>

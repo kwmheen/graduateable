@@ -5,3 +5,5 @@ def show_image(request):
 
 def menu(request):
     return render(request, 'menu.html')
+
+
