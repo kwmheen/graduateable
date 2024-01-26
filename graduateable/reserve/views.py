@@ -45,4 +45,4 @@ def get_reverse(request):
             'status': reservation.status,
             'name': reservation.name
         })
-    return JsonResponse({'data':reserve_data}, status=201)
+    return JsonResponse({'data':reserve_data}, status=201, json_dumps_params={'ensure_ascii': False})
