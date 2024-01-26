@@ -4,11 +4,14 @@ from django.views import View
 from .models import Reservation
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
 def reserve(request):
     reservations = Reservation.objects.all()
     return render(request, 'reserve.html',{'reservations': reservations})
 
+@method_decorator(csrf_exempt, name='dispatch')
 class ReserveView(View):
     def post(self, request, *args, **kwargs):
         name = request.POST.get('name')
