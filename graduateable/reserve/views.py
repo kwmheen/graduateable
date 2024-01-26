@@ -6,9 +6,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from django.core import serializers
 
 def reserve(request):
-    reservations = Reservation.objects.all()
+    reservations = Reservation.objects.all().order_by('time')
     return render(request, 'reserve.html',{'reservations': reservations})
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -34,3 +35,8 @@ class ReserveView(View):
                              'data': {'name': name,
                                       'time': time,
                                       'status': status}}, status=201)
+    
+def get_reverse(request):
+    reservations = Reservation.objects.all()
+    reservations_json = serializers.serialize('json', reservations)
+    return JsonResponse(reservations_json, safe=False)
