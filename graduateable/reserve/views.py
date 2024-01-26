@@ -31,4 +31,6 @@ class ReserveView(View):
         reservation.save()
         return JsonResponse({'status': 'success',
                              'message': 'Updated',
-                             'data': reservation}, status=201)
+                             'data': {'name': name,
+                                      'time': time,
+                                      'status': status}}, status=201)
