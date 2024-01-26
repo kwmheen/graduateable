@@ -38,5 +38,11 @@ class ReserveView(View):
     
 def get_reverse(request):
     reservations = Reservation.objects.all()
-    reservations_json = serializers.serialize('json', reservations)
-    return JsonResponse(reservations_json, safe=False)
+    reserve_data = []
+    for reservation in reservations:
+        reserve_data.append({
+            'time': reservation.time,
+            'status': reservation.status,
+            'name': reservation.name
+        })
+    return JsonResponse(reserve_data, status=201)
