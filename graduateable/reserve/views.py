@@ -30,3 +30,6 @@ class ReserveView(View):
                              'message': 'Updated',
                              'data': reservation}, status=201)
         
+def update(request):
+    print('asdf')
+    return ''
