@@ -10,29 +10,39 @@
             var input = document.querySelector('input[type="text"]');
             var title = document.querySelector('.formtitle');
             var form = document.querySelector('form');
-            var selectedDiv = document.querySelector('.selected');
+            // var selectedDiv = document.querySelector('.selected');
             var items = document.querySelectorAll('.item');
-            var applyButton = document.getElementById('apply');
+            var applyButton = document.getElementById('apply'); // apply 버튼
+            var inputName = document.querySelector('input[name="inputName"]'); // 이름 입력 필드
+            var selectedDiv = document.querySelector('.selected'); // 선택된 시간을 표시하는 div
 
             applyButton.addEventListener('click', function(event) {
                 event.preventDefault(); // 기본 동작 중단
 
-                var selectedTime = selectedTimeDiv.textContent;
-                var name = input.value;
+                var name = inputName.value;
+                var time = selectedDiv.textContent;
+                var status = '거부된'; // 상태는 '거부된'으로 고정
 
-                if (selectedTime && name) {
-                    // AJAX 요청 보내기
+                if (name && time) {
+                    // AJAX 요청 생성 및 전송
                     var xhr = new XMLHttpRequest();
-                    xhr.open("POST", "http:/15.164.202.71:8000/update", true);
+                    xhr.open("POST", "http://15.164.202.71:8000/reserve/update", true);
                     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                    xhr.send("name=" + encodeURIComponent(name) + "&time=" + encodeURIComponent(selectedTime) + "&status=거부된");
+                    xhr.send("name=" + encodeURIComponent(name) + "&time=" + encodeURIComponent(time) + "&status=" + encodeURIComponent(status));
 
-                    alert("예약 정보가 업데이트 되었습니다.");
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                            if (xhr.status === 201) {
+                                alert("예약 정보가 업데이트 되었습니다.");
+                            } else {
+                                alert("오류가 발생했습니다: " + xhr.statusText);
+                            }
+                        }
+                    };
                 } else {
-                    alert("시간을 선택해주세요.");
+                    alert("모든 필드를 채워주세요.");
                 }
             });
-    
             input.addEventListener('focus', function() {
                 title.style.color = '#0066FF';
             });
@@ -254,8 +264,8 @@
         </div>
         <img src="{% static 'images/quokka.png' %}" alt="quokka" id="quokka">
         <img src="{% static 'images/hugme.png' %}" alt="hugme" id="hugme">
-        <a href="https://www.naver.com" id="apply">
-            <img src="{% static 'images/apply.png' %}" alt="apply" id="apply">
+        <a id="apply">
+            <img src="{% static 'images/apply.png' %}" alt="apply">
         </a>
     </div>
 </body>
